@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhiyou100.dao.AccountDao">
+
+	<select id="getAccountByEmail" resultType="accountDO">
+		SELECT
+		 id
+		 , email
+		 , password
+		FROM
+		 account
+		WHERE
+		 email = #{_parameter}
+	</select>
+
+	<insert id="addAccount" parameterType="accountDO" useGeneratedKeys="true" keyProperty="id">
+		INSERT IGNORE INTO account(email, password) VALUES (#{email}, #{password});
+	</insert>
+</mapper>

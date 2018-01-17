@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.zhiyou100.dao" />
+<!-- 读取db.properties的配置信息 -->
+	<context:property-placeholder location="classpath:db/db.properties"/>
+<!-- 配置数据库连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+<!-- mybatis 和spring的集成,配置生成执行sql语句的session对象的工厂 sqlsessionFactory-->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+		<property name="typeAliasesPackage" value="com.zhiyou100.entity"/>
+		<property name="dataSource" ref="dataSource"/>
+		<property name="mapperLocations" value="classpath*:mapper/*.xml"/>
+	</bean>
+	<!-- 自动生成dao接口的实现类,并把对象注入到spring中,
+		然后就可以通过 @autowired获取对象的使用-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.zhiyou100.dao"/>
+	</bean>
+</beans>

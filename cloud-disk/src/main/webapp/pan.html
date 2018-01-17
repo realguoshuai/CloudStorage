@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>智游云盘</title>
+
+<!-- Bootstrap -->
+<link
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css"
+	rel="stylesheet">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<table class="table"></table>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script
+		src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<script
+		src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+	<script
+		src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+	<script
+		src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+	<script type="text/javascript">
+		$('document').ready(function() {
+
+			$('.table').bootstrapTable({
+				url : 'http://localhost:8080/zy-cloud-disk/directies/0',
+				columns : [ {
+					checkbox : true
+				}, {
+					title : '标题',
+					field : 'name',
+					formatter : function(value, row, index) {
+						var html1 = '<button type="button" class="btn btn-default btn-lg">';
+						var html3 = '';
+						
+						if (row.isFile) {
+							
+							html3 = '<span class="glyphicon glyphicon-file" aria-hidden="true"></span>';
+						}else {
+							
+							html3 = '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>';
+						}
+						
+						var html4 = '&emsp;' + value
+						
+						var html5 = '</button>';
+						
+						return html1 + html3 + html4 + html5;
+					}
+				} ],
+				toolbar : '#toolbar',
+				dataField : 'data',
+				cache : false,
+				queryParams : function(params) {
+				},
+				responseHandler : function(responseVO) {
+					return {
+						'total' : responseVO.data.length,
+						'data' : responseVO.data
+					};
+				},
+			})
+		})
+	</script>
+</body>
+</html>

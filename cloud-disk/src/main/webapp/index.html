@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="zh" class="no-js">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="css/demo.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+<link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css"
+	rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>
+				智游云盘 <span>最好的云盘</span>
+			</h1>
+		</header>
+		<section>
+			<div id="container_demo">
+				<a class="hiddenanchor" id="toregister"></a> <a class="hiddenanchor"
+					id="tologin"></a>
+				<div id="wrapper">
+					<div id="login" class="animate form">
+						<form id="login-form" autocomplete="on">
+							<h1>登录</h1>
+							<p>
+								<label for="username" class="uname" data-icon="u">邮箱</label> <input
+									id="username" name="email" required="required" type="email"
+									placeholder="请输入邮箱" />
+							</p>
+							<p>
+								<label for="password" class="youpasswd" data-icon="p">密码</label>
+								<input id="password" name="password" required="required"
+									type="password" placeholder="请输入密码" />
+							</p>
+							<p class="keeplogin">
+								<input type="checkbox" name="loginkeeping" id="loginkeeping"
+									value="loginkeeping" /> <label for="loginkeeping">保持登录</label>
+							</p>
+							<p class="login button">
+								<input type="button" value="登录" onclick="loginButtonClick()" />
+							</p>
+							<p class="change_link">
+								还没有账号吗？ <a href="#toregister" class="to_register">加入我们吧！</a>
+							</p>
+						</form>
+					</div>
+
+					<div id="register" class="animate form">
+						<form id="register-form" autocomplete="on">
+							<h1>注册</h1>
+							<p>
+								<label for="usernamesignup" class="uname" data-icon="u">邮箱</label>
+								<input id="usernamesignup" name="email" required="required"
+									type="email" placeholder="请输入邮箱" />
+							</p>
+							<p>
+								<label for="passwordsignup" class="youpasswd" data-icon="p">密码</label>
+								<input id="passwordsignup" name="password" required="required"
+									type="password" placeholder="请输入密码" />
+							</p>
+							<p class="signin button">
+								<input type="button" value="注册" onclick="registerButtonClick()" />
+							</p>
+							<p class="change_link">
+								已经有一个账号了？ <a href="#tologin" class="to_register">去登录</a>
+							</p>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<script
+		src="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		function loginButtonClick() {
+
+			// 获取表单中填写的信息
+			var formData = new FormData($('#login-form')[0]);
+
+			$.ajax({
+				url : "http://localhost:8080/zy-cloud-disk/session",
+				type : 'POST',
+				data : formData,
+
+				// 使用 ajax 提交表单信息，下面两个参数必须写
+				processData : false,
+				contentType : false,
+
+				success : function(responseVO) {
+
+					if (responseVO.code == 0) {
+
+						$(location).attr('href', 'http://localhost:8080/zy-cloud-disk/pan.html');
+					} else {
+
+						swal(responseVO.message);
+					}
+				},
+				error : function(error) {
+
+					swal(JSON.stringify(error));
+				}
+			});
+		}
+
+		function registerButtonClick() {
+
+			// 获取表单中填写的信息
+			var formData = new FormData($('#register-form')[0]);
+
+			$.ajax({
+				url : 'http://localhost:8080/zy-cloud-disk/accounts',
+				type : 'POST',
+				data : formData,
+
+				// 使用 ajax 提交表单信息，下面两个参数必须写
+				processData : false,
+				contentType : false,
+
+				success : function(responseVO) {
+
+					if (responseVO.code == 0) {
+
+						$(location).attr('href', 'http://localhost:8080/zy-cloud-disk/pan.html');
+					} else {
+
+						swal(responseVO.message);
+					}
+				},
+				error : function(error) {
+
+					swal(JSON.stringify(error));
+				}
+			});
+		}
+	</script>
+</body>
+</html>

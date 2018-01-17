@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhiyou100.dao.FileDao">
+
+	<select id="getFilePathById" resultType="string">
+		SELECT
+		 path
+		FROM
+		 file
+		WHERE
+		 id = #{_parameter}
+	</select>
+
+	<insert id="addFile" parameterType="fileDO" useGeneratedKeys="true" keyProperty="id">
+		INSERT IGNORE INTO file(name, path) VALUES (#{name}, #{path});
+	</insert>
+</mapper>

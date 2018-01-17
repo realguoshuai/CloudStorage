@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhiyou100.dao.DirectoryDao">
+
+	<select id="listRootDirectoryByAccountId" resultType="directoryDO">
+		SELECT
+		 id
+		 , account_id
+		 , name
+		 , parent_id
+		 , is_file
+		 , file_id
+		FROM
+		 directory
+		WHERE
+		 parent_id = 0 AND account_id = #{_parameter}
+	</select>
+
+	<select id="listDirectoryByDirectoryId" resultType="directoryDO">
+		SELECT
+		 id
+		 , account_id
+		 , name
+		 , parent_id
+		 , is_file
+		 , file_id
+		FROM
+		 directory
+		WHERE
+		 parent_id = #{_parameter}
+	</select>
+	
+	<insert id="addDirectory" parameterType="directoryDO" useGeneratedKeys="true" keyProperty="id">
+		INSERT IGNORE INTO directory VALUES (null, #{accountId}, #{name}, #{parentId}, #{isFile}, #{fileId})
+	</insert>
+	
+	<update id="updateDirectory" parameterType="directoryDO">
+		UPDATE IGNORE directory
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId},
+			</if>
+		</set>
+		WHERE
+		 id = #{id}
+	</update>
+	
+	<delete id="removeDirectory">
+		DELETE FROM directory WHERE
+		<foreach collection="array" item="id" open="id in (" close=")" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>
